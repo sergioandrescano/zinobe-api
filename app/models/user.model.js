@@ -1,36 +1,44 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    email: {
+    username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    id: {
+    role: {
+        type: String,
+        default: 'Customer',
+        enum: [
+            'Administrator',
+            'Customer'
+        ]
+    },
+    email: {
         type: String,
         unique: true,
         required: true
     },
-    requestValue: {
-        type: Number,
-        required: true
-    },
-    paymentDate: {
-        type: Date,
-        required: true
-    },
-    creditState: {
+    password: {
         type: String,
-        required: true,
-        enum: ['Aprobado','Rechazado']
+        required: true
     },
-    finishCredit: {
-        type: Boolean
-    }
 });
 
+// UserSchema.pre('save',function(next){
+//     bcrypt.genSalt(10).then(salts => {
+//         bcrypt.hash(this.password,salts).then(hash => {
+//             this.password = hash;
+//             next();
+//         }).catch(error => next(error));
+//     }).catch(error => next(error));
+// });
+
 const User = mongoose.model('User',UserSchema);
+
 module.exports = User;

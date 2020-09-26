@@ -1,7 +1,7 @@
 const User = require('../models/user.model');
 
 function get(req, res) {
-    user.find({})
+    User.find({})
         .then(users => {
             if (users.length > 0) return res.status(200).send({ users });
             return res.status(204).send({ message: 'No content' });
@@ -21,7 +21,9 @@ function put(req, res) {
 }
 
 function find(req, res, next){
-    User.find({})
+    let query = {};
+    query[req.params.id] = 
+    User.find({ id: req.params.id}).then()
 }
 
 module.exports = {
