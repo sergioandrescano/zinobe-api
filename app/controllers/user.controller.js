@@ -12,6 +12,14 @@ function getById(req, res) {
 
 }
 
+function authentication(req, res){
+    User.findOne({username: req.body.username, password: req.body.password})
+    .then(user => {
+        if (user) return res.status(200).send({ user });
+        return res.status(204).send({ message: 'No content' });
+    }).catch(error => res.status(500).send({ error }));
+}
+
 function post(req, res) {
     new User(req.body).save().then(user => res.status(201).send({ user })).catch(error => res.status(500).send({ error }));
 }
@@ -30,6 +38,7 @@ module.exports = {
     get,
     getById,
     post,
+    authentication,
     put,
     find
 }
